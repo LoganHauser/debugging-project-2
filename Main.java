@@ -9,6 +9,9 @@ public class Main {
     private static ArrayList<Player> players = new ArrayList<>();
     //Deck of cards for the game
     private static Deck deck = new Deck();
+
+    //Boolean variable to enable or disable debugging
+    public static boolean debug = true;
     
     public static void main(String[] args) {
         //Shuffle the deck
@@ -52,6 +55,10 @@ public class Main {
             */
             if (!handleTurn(currentPlayer)) {
                 currentPlayer = getOtherPlayer(currentPlayer);
+                //This print statement and the one below it are important because handleTurn() could be returning the wrong value.
+                debugPrint("handleTurn() returned false. Set current player to " + currentPlayer.name + ".");
+            } else {
+                debugPrint("handleTurn() returned true. " + currentPlayer.name + " gets another turn.");
             }
             //If there are no more cards in the deck, check which player won
             if (deck.getNumberOfCards() <= 0) {
@@ -131,11 +138,15 @@ public class Main {
             try {
                 requestedCardValue = Enum.valueOf(Card.Value.class, inputString.toUpperCase());
             } catch (IllegalArgumentException e) { //If the inputted value is not a valid card value
+                //These 3 print statements in this catch block are important because they show the logic for checking the user input in case it is not working correctly.
+                debugPrint("Card value enum did not contain the value: \"" + inputString.toUpperCase() + "\". Checking if the input can be converted to a number string.");
                 //If the player entered a card value in numerical form
                 if (Card.numberMap.containsKey(inputString)) {
                     //Get the card value the player is asking for after converting the number to word form
                     requestedCardValue = Enum.valueOf(Card.Value.class, Card.numberMap.get(inputString));
+                    debugPrint("Found valid number string \"" + Card.numberMap.get(inputString) + "\" for input.");
                 } else { //If the player did not enter a valid card value
+                    debugPrint("No valid number string was found for input: \"" + inputString + "\".");
                     //Tell the player to enter a valid card value
                     System.out.println("Please enter a valid card value.\n");
                     //Try again from the beginning of the loop
@@ -209,5 +220,11 @@ public class Main {
     private static String pluralizeValue(Card.Value cardValue) {
         String string = cardValue.toString().toLowerCase();
         return string + (string.charAt(string.length() - 1) == 'x' ? "es" : "s");
+    }
+
+    public static void debugPrint(String message) {
+        if (debug) {
+            System.out.println("Debug: " + message);
+        }
     }
 }

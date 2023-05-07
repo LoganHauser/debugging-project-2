@@ -29,6 +29,8 @@ public class Player {
 
     //Give all cards in this player's hand with the given value to another player
     public void giveCardsWithValueTo(Card.Value cardValue, Player otherPlayer) {
+        //This print statement is important because it is useful to see which cards are being transferred to another player in case the wrong cards are being transferred.
+        Main.debugPrint("Gave " + countMatchingCards(cardValue) + " cards with value " + cardValue + " from " + this.name + " to " + otherPlayer.name);
         this.hand.giveCardsWithValueTo(cardValue, otherPlayer.hand);
     }
 
@@ -48,6 +50,8 @@ public class Player {
         if (matchedValue != null) {
             this.hand.removeCardsWithValue(matchedValue);
         }
+        //This print statement is important because the method could not be finding matches correctly.
+        Main.debugPrint("checkForMatch() returned " + matchedValue);
         return matchedValue;
     }
 }

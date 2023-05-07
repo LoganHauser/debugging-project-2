@@ -49,6 +49,8 @@ public class Deck {
 
     //Add the first card in the deck to a hand
     public void addCardToHand(Hand hand) {
+        //This print statement is important because its useful to see which card is added to a hand in case the wrong card is being added.
+        Main.debugPrint("Added card " + cards.get(0) + " to hand.");
         hand.addCard(cards.get(0)); //Add first card to the hand
         this.cards.remove(cards.get(0)); //Remove the card from the deck
     }
